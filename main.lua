@@ -5,16 +5,20 @@ return {
         local dragStart
         local startPos
 
+        local canDrag = true
+
         frame.InputBegan:Connect(function(input)
-            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
-                dragToggle = true
-                dragStart = Vector2.new(input.Position.X, input.Position.Y)
-                startPos = frame.Position
-                input.Changed:Connect(function()
-                    if input.UserInputState == Enum.UserInputState.End then
-                        dragToggle = false
-                    end
-                end)
+            if canDrag then
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
+                    dragToggle = true
+                    dragStart = Vector2.new(input.Position.X, input.Position.Y)
+                    startPos = frame.Position
+                    input.Changed:Connect(function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            dragToggle = false
+                        end
+                    end)
+                end
             end
         end)
 
@@ -37,5 +41,7 @@ return {
                 end
             end
         end)
+
+        return canDrag
     end
 }
