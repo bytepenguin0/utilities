@@ -31,9 +31,9 @@ return {
 
                 if dragSpeed and typeof(dragSpeed) == "number" then
                     game:GetService("TweenService"):Create(frame, TweenInfo.new(dragSpeed), {["Position"] = position}):Play()
-                else
-                    frame.Position = position
                 end
+
+                frame.Position = position
             end
         end)
     end
