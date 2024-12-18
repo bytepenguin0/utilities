@@ -27,10 +27,12 @@ return {
     
         game:GetService("UserInputService").InputChanged:Connect(function(input)
             if input == dragInput and dragToggle then
+                local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + input.Position - dragStart.X, startPos.Y.Scale, startPos.Y.Offset + input.Position - dragStart.Y)
+
                 if dragSpeed and typeof(dragSpeed) == "number" then
-                    game:GetService("TweenService"):Create(frame, TweenInfo.new(dragSpeed), {["Position"] = UDim2.new(startPos.X.Scale, startPos.X.Offset + input.Position - dragStart.X, startPos.Y.Scale, startPos.Y.Offset + input.Position - dragStart.Y)}):Play()
+                    game:GetService("TweenService"):Create(frame, TweenInfo.new(dragSpeed), {["Position"] = position}):Play()
                 else
-                    frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + input.Position - dragStart.X, startPos.Y.Scale, startPos.Y.Offset + input.Position - dragStart.Y)
+                    frame.Position = position
                 end
             end
         end)
