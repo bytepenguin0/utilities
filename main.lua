@@ -5,10 +5,10 @@ return {
         local dragStart
         local startPos
 
-        local canDrag = true
+        getgenv().canDrag = true
 
         frame.InputBegan:Connect(function(input)
-            if canDrag then
+            if getgenv().canDrag then
                 if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
                     dragToggle = true
                     dragStart = Vector2.new(input.Position.X, input.Position.Y)
@@ -41,7 +41,5 @@ return {
                 end
             end
         end)
-
-        return canDrag
     end
 }
