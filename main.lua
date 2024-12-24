@@ -8,27 +8,37 @@ return {
         getgenv().canDrag = true
 
         frame.InputBegan:Connect(function(input)
-            if getgenv().canDrag then
-                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
-                    dragToggle = true
-                    dragStart = Vector2.new(input.Position.X, input.Position.Y)
-                    startPos = frame.Position
-                    input.Changed:Connect(function()
-                        if input.UserInputState == Enum.UserInputState.End then
-                            dragToggle = false
-                        end
-                    end)
-                end
+            if not getgenv().canDrag then
+                return
+            end
+
+            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
+                dragToggle = true
+                dragStart = Vector2.new(input.Position.X, input.Position.Y)
+                startPos = frame.Position
+                input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then
+                        dragToggle = false
+                    end
+                end)
             end
         end)
 
         frame.InputChanged:Connect(function(input)
+            if not getgenv().canDrag then
+                return
+            end
+
             if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
                 dragInput = input
             end
         end)
 
         game:GetService("UserInputService").InputChanged:Connect(function(input)
+            if not getgenv().canDrag then
+                return
+            end
+            
             if input == dragInput and dragToggle then
                 local inputPos = Vector2.new(input.Position.X, input.Position.Y)
                 local delta = inputPos - dragStart
