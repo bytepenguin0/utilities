@@ -35,7 +35,7 @@ return {
         end)
 
         game:GetService("UserInputService").InputChanged:Connect(function(input)
-            if not getgenv().canDrag then
+            if not getgenv()._candrag then
                 return
             end
             
