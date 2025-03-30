@@ -5,10 +5,10 @@ return {
         local dragStart
         local startPos
 
-        getgenv().canDrag = true
+        getgenv()._candrag = true
 
         frame.InputBegan:Connect(function(input)
-            if not getgenv().canDrag then
+            if not getgenv()._candrag then
                 return
             end
 
@@ -25,7 +25,7 @@ return {
         end)
 
         frame.InputChanged:Connect(function(input)
-            if not getgenv().canDrag then
+            if not getgenv()._candrag then
                 return
             end
 
