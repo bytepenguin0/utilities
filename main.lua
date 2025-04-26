@@ -3,7 +3,7 @@ local utilities = {}
 utilities.dragify = {}
 utilities.dragify.__index = utilities.dragify
 
-function utilities.dragify(data)
+function utilities.drag(data)
     assert(data, "missing data")
 
     assert(data["frame"] ~= nil, "missing 'frame'")
@@ -11,8 +11,7 @@ function utilities.dragify(data)
 
     data = setmetatable(data, utilities.dragify)
 
-    local dragInput, dragStart, startPos
-    data.dragging = false
+    local dragToggle, dragInput, dragStart, startPos
 
     data.frame.InputBegan:Connect(function(input)
         if not data.canDrag then
@@ -20,12 +19,12 @@ function utilities.dragify(data)
         end
 
         if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
-            data.dragging = true
+            dragToggle = true
             dragStart = Vector2.new(input.Position.X, input.Position.Y)
             startPos = data.frame.Position
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
-                    data.dragging = false
+                    dragToggle = false
                 end
             end)
         end
@@ -45,8 +44,8 @@ function utilities.dragify(data)
         if not data.canDrag then
             return
         end
-        
-        if input == dragInput and data.dragging then
+
+        if input == dragInput and dragToggle then
             local inputPos = Vector2.new(input.Position.X, input.Position.Y)
             local delta = inputPos - dragStart
             local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
@@ -58,7 +57,7 @@ function utilities.dragify(data)
             end
         end
     end)
-
+    
     return data
 end
 
