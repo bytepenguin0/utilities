@@ -7,11 +7,14 @@ function utilities.drag(data)
     assert(data, "missing data")
 
     assert(data["frame"] ~= nil, "missing 'frame'")
-    assert(data["canDrag"] ~= nil, "missing 'canDrag'")
 
     data = setmetatable(data, utilities.dragify)
 
     local dragToggle, dragInput, dragStart, startPos
+
+    if not data.canDrag then
+        data.canDrag = true
+    end
 
     data.frame.InputBegan:Connect(function(input)
         if not data.canDrag then
