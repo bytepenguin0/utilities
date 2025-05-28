@@ -1,12 +1,17 @@
+if not cloneref then
+    cloneref = function(...)
+        return ...
+    end
+end
+
 local utilities = {}
 
 utilities.dragify = {}
 utilities.dragify.__index = utilities.dragify
 
-function utilities.drag(data)
+function utilities:drag(data)
     assert(data, "missing data")
-
-    assert(data["frame"] ~= nil, "missing 'frame'")
+    assert(data.frame ~= nil, "missing frame")
 
     data = setmetatable(data, utilities.dragify)
 
@@ -21,7 +26,7 @@ function utilities.drag(data)
             return
         end
 
-        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and game:GetService("UserInputService"):GetFocusedTextBox() == nil then
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and cloneref(game:GetService("UserInputService")):GetFocusedTextBox() == nil then
             dragToggle = true
             dragStart = Vector2.new(input.Position.X, input.Position.Y)
             startPos = data.frame.Position
@@ -43,7 +48,7 @@ function utilities.drag(data)
         end
     end)
 
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
+    cloneref(game:GetService("UserInputService")).InputChanged:Connect(function(input)
         if not data.canDrag then
             return
         end
@@ -54,7 +59,7 @@ function utilities.drag(data)
             local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 
             if data.dragSpeed and typeof(data.dragSpeed) == "number" then
-                game:GetService("TweenService"):Create(data.frame, TweenInfo.new(data.dragSpeed), {["Position"] = position}):Play()
+                cloneref(game:GetService("TweenService")):Create(data.frame, TweenInfo.new(data.dragSpeed), {["Position"] = position}):Play()
             else
                 data.frame.Position = position
             end
